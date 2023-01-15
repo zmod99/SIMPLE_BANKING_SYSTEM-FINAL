@@ -229,6 +229,10 @@ public class Main {
             System.out.println("Wrong input!");
             return;
         }
+        if (receiverAccount.getCardNumber().equals(senderAccount.getCardNumber())) {
+            System.out.println("You are trying to transfer funds to the same account!");
+            return;
+        }
         receiverAccount.addIncome(transferAmount);
         senderAccount.setBalance(senderAccount.getBalance() - transferAmount);
         System.out.println("Success!");

@@ -39,23 +39,23 @@ public class Main {
         }
         accountDAO = new AccountDAO(conn);
         userDAO = new UserDAO(conn);
-        userMenu();
+        menu();
         System.out.println("Bye!");
 
     }
 
-    static void userMenu() {
-        //int userMenu je autoinicijaliziran kao 0
-        int userMenu;
+    static void menu() {
+        //int menu je autoinicijaliziran kao 0
+        int menu;
         do {
             System.out.println("\n1. Create an user");
             System.out.println("2. Log into user");
             System.out.println("3. List all users");
             System.out.println("0. Exit");
             System.out.print(">");
-            userMenu = scanner.nextInt();
+            menu = scanner.nextInt();
             scanner.nextLine();
-            switch (userMenu) {
+            switch (menu) {
                 case 0:
                     break;
                 case 1:
@@ -65,9 +65,8 @@ public class Main {
                     System.out.print("\n Enter your last name: ");
                     user.setLastName(scanner.nextLine());
                     do {
-                        System.out.print("\n Enter your citizenship: (Croatia, Bulgaria or Slovenia):");
+                        System.out.print("\n Enter your citizenship: (Croatia, Bulgaria or Slovenia): ");
                         user.setCountry(scanner.nextLine());
-
                     } while (user.getCountry() == null);
 
                     do {
@@ -92,7 +91,7 @@ public class Main {
                         System.out.println("Incorrect email or password, try again!\n");
                         break;
                     }
-                    accountMenu(user1);
+                    userMenu(user1);
                     break;
                 case 3:
                     List<User> userList = userDAO.getUsersToList();
@@ -103,12 +102,12 @@ public class Main {
 
             }
 
-        } while (userMenu != 0);
+        } while (menu != 0);
 
 
     }
 
-    static void accountMenu(User loggedUser) {
+    static void userMenu(User loggedUser) {
         int choice = 1;
         while (choice != 0) {
             System.out.println("\n1. Create an account\n2. Log into account\n3. List all your accounts\n0. Exit");
@@ -132,7 +131,7 @@ public class Main {
                     String cardPin = scanner.nextLine();
                     Account acc = accountDAO.findAccountByNumber(cardNumber);
                     if (acc != null && acc.getCardPin().equals(cardPin)) {
-                        cardMenu(acc);
+                        accountMenu(acc);
                     } else {
                         System.out.println("Incorrect card number or card PIN, try again!");
                     }
@@ -154,7 +153,7 @@ public class Main {
         }
     }
 
-    static void cardMenu(Account account) {
+    static void accountMenu(Account account) {
 
         System.out.println("You have successfully logged to your account!");
         boolean isActive = true;
@@ -226,6 +225,10 @@ public class Main {
         }
         if (transferAmount <= 0L) {
             System.out.println("Wrong input!");
+            return;
+        }
+        if (receiverAccount.getCardNumber().equals(senderAccount.getCardNumber())) {
+            System.out.println("You are trying to transfer funds to the same account!");
             return;
         }
         receiverAccount.addIncome(transferAmount);

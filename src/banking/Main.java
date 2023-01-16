@@ -187,9 +187,7 @@ public class Main {
                     if (Account.checkIfValid(cardNumberReciever)) {
                         for (Account receiver : accountDAO.getAccountsToList()) {
                             if (receiver.getCardNumber().equals(cardNumberReciever)) {
-                                transferMoney(account, receiver);
-                                accountDAO.updateBalance(account);
-                                accountDAO.updateBalance(receiver);
+                                transfer(account, receiver);
                                 isFound = true;
                             }
                         }
@@ -218,7 +216,7 @@ public class Main {
 
     }
 
-    static void transferMoney(Account senderAccount, Account receiverAccount) {
+    static void transfer(Account senderAccount, Account receiverAccount) {
         System.out.println("Enter the money amount that you wish to transfer:");
         double transferAmount = scanner.nextDouble();   // accounts are receiver(receiver) and account(sender)s
 
@@ -233,6 +231,8 @@ public class Main {
         receiverAccount.addIncome(transferAmount);
         senderAccount.setBalance(senderAccount.getBalance() - transferAmount);
         System.out.println("Success!");
+        accountDAO.updateBalance(senderAccount);
+        accountDAO.updateBalance(receiverAccount);
     }
 
     private static void makeDbConnection(String fileName) {
